@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using VaquinhaWebAPI.Data;
+using VaquinhaWebAPI.Models;
+using VaquinhaWebAPI.Repositories;
+using VaquinhaWebAPI.Repositories.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<VaquinhaContext>(
+    context => context.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IRepository<Pagante>, Repository<Pagante>>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
