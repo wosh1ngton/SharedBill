@@ -17,7 +17,19 @@ builder.Services.AddDbContext<VaquinhaContext>(
     context => context.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IRepository<Pagante>, Repository<Pagante>>();
+
+//Habilita o CORS para aceitar requisições de outros domínios.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
+
+//builder.Services.AddScoped<IRepository<Pagante>, Repository<Pagante>>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IDespesaRepository, DespesaRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="form-despesa">
+  <form #f="ngForm" (ngSubmit)="save(f.value)">
+      <p class="tituloForm">
+        Cadastrar Despesa
+      </p>
+      <mat-form-field appearance="fill">
+        <mat-label>Data da despesa </mat-label>
+        <input matInput [matDatepicker]="picker" name="DtItemDespesa" ngModel #DtItemDespesa="ngModel">       
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <input matInput required name="DescricaoItemDespesa" ngModel #DescricaoItemDespesa="ngModel">
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>Valor</mat-label>
+        <input matInput required name="ValorItemDespesa" ngModel #ValorItemDespesa="ngModel">
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>Pagante</mat-label>
+        <mat-select ngModel name="PaganteId" #PaganteId="ngModel">
+          <mat-option *ngFor="let pg of pagantes | async" [value]="pg.id">
+            {{pg.nomePagante + ' ' + pg.sobrenomePagante}}
+          </mat-option>        
+        </mat-select>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>% pago </mat-label>
+        <input matInput required name="PercentualPago" ngModel #PercentualPago="ngModel">
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo de Despesa</mat-label>
+        <mat-select ngModel name="TipoItemDespesaId" #TipoItemDespesaId="ngModel">
+          <mat-option *ngFor="let pg of tiposDespesas | async" [value]="pg.id">
+            {{pg.nomeTipoItemDespesa}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>Categoria da Despesa </mat-label>
+        <mat-select ngModel name="CategoriaItemDespesaId" #CategoriaItemDespesaId="ngModel">
+          <mat-option *ngFor="let pg of categoriasDespesas | async" [value]="pg.id">
+            {{pg.nomeCategoriaItemDespesa}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />      
+      <button mat-raised-button color="primary" [disabled]="f.invalid">Cadastrar</button>
+
+    </form>
+  </div>
+  </div>
