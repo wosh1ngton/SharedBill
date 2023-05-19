@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ListaDeDespesasComponent } from './components/lista-de-despesas/lista-de-despesas.component';
 import { HomeComponent } from './components/home/home.component';
+import { DespesasDialogComponent } from './components/despesas-dialog/despesas-dialog.component';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -19,15 +21,17 @@ import { HomeComponent } from './components/home/home.component';
     DespesasComponent,
     NavbarComponent,
     ListaDeDespesasComponent,
-    HomeComponent
+    HomeComponent,
+    DespesasDialogComponent,
+    ConfirmationDialogComponent 
   ],
   imports: [
-    MatComponentsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

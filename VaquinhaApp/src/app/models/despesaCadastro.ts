@@ -1,10 +1,12 @@
-export interface despesaCadastro 
+export class DespesaCadastro 
 {
-    DtItemDespesa: Date;
-    DescricaoItemDespesa: string;
-    ValorItemDespesa: string;
-    PaganteId: string;
-    PercentualPago: string;        
-    TipoItemDespesaId: string;     
-    CategoriaItemDespesaId: string;
+    pagamentoId: string;
+    dtItemDespesa: Date;
+    descricaoItemDespesa: string;
+    valorItemDespesa: string;
+    itemdDespesaId: string;
+    paganteId: string;
+    percentualPago: string;        
+    tipoItemDespesaId: string;     
+    categoriaItemDespesaId: string;
 }

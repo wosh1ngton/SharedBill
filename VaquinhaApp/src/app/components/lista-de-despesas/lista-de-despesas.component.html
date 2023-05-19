@@ -1,9 +1,23 @@
+<div id="btnAdicionarDespesa">
+<button mat-raised-button color="primary" #addButton (click)="AddDespesa()">
+  Adicionar Despesa
+</button>
+<div class="filtroMes">
+  <mat-chip-listbox aria-label="Fish selection">
+    <mat-chip-option>One fish</mat-chip-option>
+    <mat-chip-option>Two fish</mat-chip-option>
+    <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
+    <mat-chip-option color="warn">Warn fish</mat-chip-option>
+  </mat-chip-listbox>
+</div>
+</div>
+<div class="listaDeDespesas">
 <table mat-table [dataSource]="(dataSource$ | async)" class="mat-elevation-z8 lista-despesas">    
   
     <!-- data da depesa -->
     <ng-container matColumnDef="DtItemDespesa">
       <th mat-header-cell *matHeaderCellDef> Data da despesa </th>
-      <td mat-cell *matCellDef="let element"> {{element.dtItemDespesa}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.dtItemDespesa | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
   
     <!-- descrição -->
@@ -21,8 +35,10 @@
     <!-- pagante -->
     <ng-container matColumnDef="NomePagante">
       <th mat-header-cell *matHeaderCellDef> Pagante </th>
-      <td mat-cell *matCellDef="let element"> {{element.nome }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.nomePagante }} </td>
     </ng-container>
+
+
     <!-- % pago -->
     <ng-container matColumnDef="PercentualPago">
       <th mat-header-cell *matHeaderCellDef> % pago </th>
@@ -32,16 +48,32 @@
     <!-- tipo despesa -->
     <ng-container matColumnDef="TipoDespesa">
       <th mat-header-cell *matHeaderCellDef> Tipo de despesa </th>
-      <td mat-cell *matCellDef="let element"> {{element.tipoDespesa}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.nomeTipoItemDespesa}} </td>
     </ng-container>
 
       <!-- categoria -->
       <ng-container matColumnDef="CategoriaDespesa">
         <th mat-header-cell *matHeaderCellDef> Categoria </th>
-        <td mat-cell *matCellDef="let element"> {{element.categoriaDespesa}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.nomeCategoriaItemDespesa}} </td>
       </ng-container>      
 
+         <!-- Opções -->
+         <ng-container matColumnDef="options">
+          <th mat-header-cell *matHeaderCellDef> Opções </th>
+          <td mat-cell *matCellDef="let element">
+
+          
+             <mat-icon (click)="DeleteDespesa(element.pagamentoId)"> 
+                delete
+             </mat-icon>
+             <mat-icon (click)="EditDespesa(element)">
+                edit
+             </mat-icon>
+             
+          </td>
+        </ng-container>  
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>

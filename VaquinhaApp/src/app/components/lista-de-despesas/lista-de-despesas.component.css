@@ -1,3 +1,9 @@
-.lista-despesas {   
+.listaDeDespesas {   
     margin: 20px;    
   }
+#btnAdicionarDespesa {
+  margin: 20px;
+}
+.filtroMes {
+  float: right;
+}

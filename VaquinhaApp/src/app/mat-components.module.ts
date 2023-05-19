@@ -17,6 +17,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table'  
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 
@@ -39,7 +41,9 @@ import { MatTableModule } from '@angular/material/table'
     MatCardModule,
     MatGridListModule,
     MatSidenavModule,
-    MatTableModule
+    MatTableModule,
+    MatSnackBarModule,
+    MatChipsModule
   ]
 })
 export class MatComponentsModule { }

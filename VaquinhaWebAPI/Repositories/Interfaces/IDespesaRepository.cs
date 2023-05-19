@@ -7,5 +7,8 @@ namespace VaquinhaWebAPI.Repositories.Interfaces
     {
         void CadastrarDespesa(DespesaDTO despesa);
         IQueryable<Pagamento> ListarDespesas();
+        void ExcluirDespesa(int id);
+        Pagamento GetDespesaById(int id);        
+        void UpdateDespesa(ItemDespesa despesa, Pagamento pagamento);
     }
 }

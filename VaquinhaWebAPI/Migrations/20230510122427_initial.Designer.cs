@@ -11,8 +11,8 @@ using VaquinhaWebAPI.Data;
 namespace VaquinhaWebAPI.Migrations
 {
     [DbContext(typeof(VaquinhaContext))]
-    [Migration("20230503124949_Dados")]
-    partial class Dados
+    [Migration("20230510122427_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,83 +149,86 @@ namespace VaquinhaWebAPI.Migrations
 
             modelBuilder.Entity("VaquinhaWebAPI.Models.Pagamento", b =>
                 {
-                    b.Property<int>("PaganteId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasColumnName("ID_PAGANTE");
+                        .HasColumnName("ID_PAGAMENTO");
 
                     b.Property<int>("ItemDespesaId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("ID_ITEM_DESPESA");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("PaganteId")
                         .HasColumnType("INTEGER")
-                        .HasColumnName("ID_PAGAMENTO");
+                        .HasColumnName("ID_PAGANTE");
 
                     b.Property<int>("PercentualPago")
                         .HasColumnType("INTEGER")
                         .HasColumnName("NR_PERCENTUAL_PAGO");
 
-                    b.HasKey("PaganteId", "ItemDespesaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemDespesaId");
+
+                    b.HasIndex("PaganteId");
 
                     b.ToTable("PAGAMENTO");
 
                     b.HasData(
                         new
                         {
-                            PaganteId = 1,
+                            Id = 1,
                             ItemDespesaId = 1,
-                            Id = 1,
+                            PaganteId = 1,
                             PercentualPago = 60
                         },
                         new
                         {
-                            PaganteId = 1,
+                            Id = 2,
                             ItemDespesaId = 2,
-                            Id = 1,
+                            PaganteId = 1,
                             PercentualPago = 60
                         },
                         new
                         {
-                            PaganteId = 1,
+                            Id = 3,
                             ItemDespesaId = 3,
-                            Id = 1,
+                            PaganteId = 1,
                             PercentualPago = 60
                         },
                         new
                         {
-                            PaganteId = 1,
+                            Id = 4,
                             ItemDespesaId = 4,
-                            Id = 1,
+                            PaganteId = 1,
                             PercentualPago = 70
                         },
                         new
                         {
-                            PaganteId = 2,
+                            Id = 5,
                             ItemDespesaId = 1,
-                            Id = 1,
+                            PaganteId = 2,
                             PercentualPago = 40
                         },
                         new
                         {
-                            PaganteId = 2,
+                            Id = 6,
                             ItemDespesaId = 2,
-                            Id = 1,
+                            PaganteId = 2,
                             PercentualPago = 40
                         },
                         new
                         {
-                            PaganteId = 2,
+                            Id = 7,
                             ItemDespesaId = 3,
-                            Id = 1,
+                            PaganteId = 2,
                             PercentualPago = 40
                         },
                         new
                         {
-                            PaganteId = 2,
+                            Id = 8,
                             ItemDespesaId = 4,
-                            Id = 1,
+                            PaganteId = 2,
                             PercentualPago = 30
                         });
                 });

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { despesaView } from '../models/despesaView';
+import { DespesaView } from '../models/despesaView';
 
 @Injectable({
   providedIn: 'root'
@@ -25,22 +25,29 @@ export class DespesasService {
     return this.http.get(this.baseUrl+'Despesas/CategoriasDespesas');
   }
 
-  create(despesa: any) : Observable<any> {
-    console.log('objeto despesa', despesa);
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json'
-    //   })
-    // };
+  create(despesa: any) : Observable<any> {    
     return this.http.post(this.baseUrl+'Despesas',despesa);
   }
+
+  edit(despesa:any): Observable<any> {
+    console.log('Em Edição', despesa);
+    return this.http.put(this.baseUrl+'Despesas/'+despesa.pagamentoId, despesa);
+  }
   
-  getDespesas() : Observable<despesaView[]> {
-    return this.http.get<despesaView[]>(this.baseUrl+'Despesas').pipe(
-        map((res:despesaView[]) => {
+  getDespesas() : Observable<DespesaView[]> {
+    return this.http.get<DespesaView[]>(this.baseUrl+'Despesas').pipe(
+        map((res:DespesaView[]) => {
           console.log(res);
          return res;
         })        
     );
+  }
+
+  deleteDespesaById(id:number) {
+    return this.http.delete(this.baseUrl+'Despesas/'+id,{responseType: 'text'});
+  }
+
+  getDespesaById(id:number) {
+    return this.http.get(this.baseUrl+'Despesas/'+id)    
   }
 }

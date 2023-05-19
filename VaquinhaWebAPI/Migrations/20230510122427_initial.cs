@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace VaquinhaWebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,14 +86,15 @@ namespace VaquinhaWebAPI.Migrations
                 name: "PAGAMENTO",
                 columns: table => new
                 {
+                    ID_PAGAMENTO = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NR_PERCENTUAL_PAGO = table.Column<int>(type: "INTEGER", nullable: false),
                     ID_ITEM_DESPESA = table.Column<int>(type: "INTEGER", nullable: false),
-                    ID_PAGANTE = table.Column<int>(type: "INTEGER", nullable: false),
-                    ID_PAGAMENTO = table.Column<int>(type: "INTEGER", nullable: false),
-                    NR_PERCENTUAL_PAGO = table.Column<int>(type: "INTEGER", nullable: false)
+                    ID_PAGANTE = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PAGAMENTO", x => new { x.ID_PAGANTE, x.ID_ITEM_DESPESA });
+                    table.PrimaryKey("PK_PAGAMENTO", x => x.ID_PAGAMENTO);
                     table.ForeignKey(
                         name: "FK_PAGAMENTO_ITEM_DESPESA_ID_ITEM_DESPESA",
                         column: x => x.ID_ITEM_DESPESA,
@@ -104,6 +107,62 @@ namespace VaquinhaWebAPI.Migrations
                         principalTable: "PAGANTE",
                         principalColumn: "ID_PAGANTE",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "CATEGORIA_ITEM_DESPESA",
+                columns: new[] { "ID_CATEGORIA_ITEM_DESPESA", "NM_CATEGORIA_ITEM_DESPESA" },
+                values: new object[,]
+                {
+                    { 1, "Supermercado" },
+                    { 2, "Carne" },
+                    { 3, "Outros" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PAGANTE",
+                columns: new[] { "ID_PAGANTE", "NM_NOME", "NM_SOBRENOME" },
+                values: new object[,]
+                {
+                    { 1, "Woshington", "Silva" },
+                    { 2, "Charline", "Rocha" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TIPO_ITEM_DESPESA",
+                columns: new[] { "ID_TIPO_ITEM_DESPESA", "NM_TIPO_ITEM_DESPESA" },
+                values: new object[,]
+                {
+                    { 1, "Custeio Mensal" },
+                    { 2, "Outros" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ITEM_DESPESA",
+                columns: new[] { "ID_ITEM_DESPESA", "ID_CATEGORIA_ITEM_DESPESA", "DS_ITEM_DESPESA", "DT_ITEM_DESPESA", "ID_TIPO_ITEM_DESPESA", "NR_VALOR" },
+                values: new object[,]
+                {
+                    { 1, 1, "Pão de Açúcar", new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 250m },
+                    { 2, 1, "Swift", new DateTime(2023, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 350m },
+                    { 3, 2, "Viagem", new DateTime(2023, 2, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 50m },
+                    { 4, 1, "Pão de Açúcar", new DateTime(2023, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 58m },
+                    { 5, 2, "HortiFrutti", new DateTime(2022, 8, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 20m },
+                    { 6, 2, "Pão de Açúcar", new DateTime(2022, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 250m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PAGAMENTO",
+                columns: new[] { "ID_PAGAMENTO", "ID_ITEM_DESPESA", "ID_PAGANTE", "NR_PERCENTUAL_PAGO" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 60 },
+                    { 2, 2, 1, 60 },
+                    { 3, 3, 1, 60 },
+                    { 4, 4, 1, 70 },
+                    { 5, 1, 2, 40 },
+                    { 6, 2, 2, 40 },
+                    { 7, 3, 2, 40 },
+                    { 8, 4, 2, 30 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -120,6 +179,11 @@ namespace VaquinhaWebAPI.Migrations
                 name: "IX_PAGAMENTO_ID_ITEM_DESPESA",
                 table: "PAGAMENTO",
                 column: "ID_ITEM_DESPESA");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PAGAMENTO_ID_PAGANTE",
+                table: "PAGAMENTO",
+                column: "ID_PAGANTE");
         }
 
         /// <inheritdoc />

@@ -1,8 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using VaquinhaWebAPI.DTOs;
 using VaquinhaWebAPI.Models;
-using VaquinhaWebAPI.Repositories;
 using VaquinhaWebAPI.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace VaquinhaWebAPI.Controllers
 {
@@ -10,15 +11,18 @@ namespace VaquinhaWebAPI.Controllers
     [Route("api/[controller]")]
     public class DespesasController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IRepository<TipoItemDespesa> _repository;
         private readonly IRepository<CategoriaItemDespesa> _categoriaItemDespesa;
         private readonly IDespesaRepository _despesaRepository;
         public DespesasController(
+            IMapper mapper,
             IRepository<TipoItemDespesa> repository,
             IRepository<CategoriaItemDespesa> categoriaItemDespesa,
             IDespesaRepository despesaRepository
             )
         {
+            _mapper = mapper;
             _repository = repository;
             _categoriaItemDespesa = categoriaItemDespesa;
             _despesaRepository = despesaRepository;
@@ -32,11 +36,14 @@ namespace VaquinhaWebAPI.Controllers
             var listaDespesas = new List<DespesaViewModel>();
             foreach (var item in despesas)
             {
-                 var desp = new DespesaViewModel();
+                 var desp = new DespesaViewModel();  
+                 desp.PagamentoId = item.Id;               
                  desp.DtItemDespesa = item.ItemDespesa.DtItemDespesa;
                  desp.DescricaoItemDespesa = item.ItemDespesa.DescricaoItemDespesa;
+                 desp.PaganteId = item.PaganteId;
+                 desp.ItemDespesaId = item.ItemDespesaId;
                  desp.ValorItemDespesa = item.ItemDespesa.ValorItemDespesa;
-                 desp.Nome = item.Pagante.NomePagante;
+                 desp.NomePagante = item.Pagante.NomePagante;
                  desp.PercentualPago = item.PercentualPago;
                  desp.NomeTipoItemDespesa = item.ItemDespesa.TipoItemDespesa.NomeTipoItemDespesa;
                  desp.NomeCategoriaItemDespesa = item.ItemDespesa.CategoriaItemDespesa.NomeCategoriaItemDespesa;
@@ -46,9 +53,34 @@ namespace VaquinhaWebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById() 
+        public IActionResult GetById(int id) 
         {
+            var despesa = _despesaRepository.GetDespesaById(id);
+            
+            var desp = new DespesaDTO();  
+                 desp.PagamentoId = despesa.Id;               
+                 desp.DtItemDespesa = despesa.ItemDespesa.DtItemDespesa;
+                 desp.DescricaoItemDespesa = despesa.ItemDespesa.DescricaoItemDespesa;
+                 desp.ValorItemDespesa = despesa.ItemDespesa.ValorItemDespesa;
+                 desp.PaganteId = despesa.PaganteId;
+                 desp.PercentualPago = despesa.PercentualPago;
+                 desp.TipoItemDespesaId = despesa.ItemDespesa.TipoItemDespesaId;
+                 desp.CategoriaItemDespesaId = despesa.ItemDespesa.CategoriaItemDespesaId;
+            return Ok(desp);
+        }
 
+        [HttpPut("{id:int}")]
+        public IActionResult Put(int id, [FromBody] DespesaDTO model) 
+        {
+            var despesa = _despesaRepository.GetDespesaById(id);
+
+            if(despesa == null) return BadRequest("Despesa não encontrada");
+
+            model.ItemDespesaId = despesa.ItemDespesaId;
+            var itemDespesa = _mapper.Map<ItemDespesa>(model);
+            var pgto = _mapper.Map<Pagamento>(model);
+            _despesaRepository.UpdateDespesa(itemDespesa,pgto);
+           
             return Ok();
         }
         
@@ -71,6 +103,13 @@ namespace VaquinhaWebAPI.Controllers
         {
             _despesaRepository.CadastrarDespesa(despesa);
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {            
+            _despesaRepository.ExcluirDespesa(id);
+            return Ok("Despesa excluída");
         }
 
         

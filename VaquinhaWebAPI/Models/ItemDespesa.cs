@@ -5,25 +5,44 @@ namespace VaquinhaWebAPI.Models
 {
     [Table("ITEM_DESPESA")]
     public class ItemDespesa
-    {        
-        public ItemDespesa(
-            int id, 
+    {   
+        public ItemDespesa()
+        {
+            
+        }     
+        public ItemDespesa(          
             string descricaoItemDespesa,
             decimal valorItemDespesa, 
             int tipoItemDespesaId, 
             int categoriaItemDespesaId, 
             DateTime dtItemDespesa)
-        {
-            this.Id = id;
+        {          
             this.DescricaoItemDespesa = descricaoItemDespesa;
             this.ValorItemDespesa = valorItemDespesa;
             this.TipoItemDespesaId = tipoItemDespesaId;
             this.CategoriaItemDespesaId = categoriaItemDespesaId;
             this.DtItemDespesa = dtItemDespesa;
 
-        }        
-       
+        }   
 
+         public ItemDespesa(   
+            int ItemDespesaId,       
+            string descricaoItemDespesa,
+            decimal valorItemDespesa, 
+            int tipoItemDespesaId, 
+            int categoriaItemDespesaId, 
+            DateTime dtItemDespesa)
+        {      
+            this.Id = ItemDespesaId;    
+            this.DescricaoItemDespesa = descricaoItemDespesa;
+            this.ValorItemDespesa = valorItemDespesa;
+            this.TipoItemDespesaId = tipoItemDespesaId;
+            this.CategoriaItemDespesaId = categoriaItemDespesaId;
+            this.DtItemDespesa = dtItemDespesa;
+
+        }      
+       
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID_ITEM_DESPESA")]       
         public int Id { get; set; }
 

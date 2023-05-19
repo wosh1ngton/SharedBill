@@ -1,0 +1,90 @@
+<!-- <h2 mat-dialog-title *ngIf="despesa != null">{{despesa.descricaoItemDespesa}}</h2> -->
+
+<mat-dialog-content>
+    <form #f="ngForm" >
+      <div *ngIf="despesa"> 
+        <p class="tituloForm">
+          Cadastrar Despesa
+        </p>
+        <input name="pagamentoId" type="hidden" [(ngModel)]="despesa.pagamentoId" />
+        <mat-form-field appearance="fill">
+          <mat-label>Data da despesa </mat-label>
+          <input matInput [matDatepicker]="picker" name="DtItemDespesa"
+          [(ngModel)]="despesa.dtItemDespesa">   
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+          <mat-label>Descrição</mat-label>
+          <input matInput required name="DescricaoItemDespesa" 
+          [(ngModel)]="despesa.descricaoItemDespesa">
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Valor</mat-label>
+          <input matInput required name="ValorItemDespesa"
+          [(ngModel)]="despesa.valorItemDespesa">
+
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Pagante</mat-label>
+          <mat-select name="PaganteId" 
+          [(ngModel)]="despesa.paganteId">
+            <mat-option *ngFor="let pg of pagantes | async" [value]="pg.id">
+              {{pg.nomePagante + ' ' + pg.sobrenomePagante}}
+            </mat-option>        
+          </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>% pago </mat-label>
+          <input matInput required name="PercentualPago" 
+          [(ngModel)]="despesa.percentualPago"
+          >
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de Despesa</mat-label>
+          <mat-select name="TipoItemDespesaId"
+          [(ngModel)]="despesa.tipoItemDespesaId">
+            <mat-option *ngFor="let pg of tiposDespesas | async" [value]="pg.id">
+              {{pg.nomeTipoItemDespesa}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Categoria da Despesa </mat-label>
+          <mat-select ngModel name="CategoriaItemDespesaId"
+          [(ngModel)]="despesa.categoriaItemDespesaId">
+            <mat-option *ngFor="let pg of categoriasDespesas | async" [value]="pg.id">
+              {{pg.nomeCategoriaItemDespesa}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />    
+      </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="despesa">
+
+  <button mat-raised-button
+          (click)="close()">
+    Fechar
+  </button>  
+  <button mat-raised-button color="primary" #createButton
+  [disabled]="f.invalid" (click)="save(f.value)" *ngIf="!despesa.pagamentoId">
+    Criar 
+  </button>
+  <button mat-raised-button color="primary" #saveButton *ngIf="despesa.pagamentoId"
+  [disabled]="f.invalid" (click)="editar(f.value)">
+    Salvar
+  </button>
+  
+</mat-dialog-actions>
+
+

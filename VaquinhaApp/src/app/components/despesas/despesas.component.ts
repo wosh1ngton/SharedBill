@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DespesasService } from 'src/app/services/despesas.service';
-import { despesaCadastro } from 'src/app/models/despesaCadastro';
+import { DespesaCadastro } from 'src/app/models/despesaCadastro';
 import { tap } from 'rxjs';
 @Component({
   selector: 'app-despesas',
@@ -24,7 +24,7 @@ export class DespesasComponent implements OnInit {
     this.tiposDespesas = this.despesaService.getTipoDespesas();
   }
 
-  save(despesa:despesaCadastro) {
+  save(despesa:DespesaCadastro) {
     console.log(despesa)
     this.despesaService.create(despesa)
       .pipe(

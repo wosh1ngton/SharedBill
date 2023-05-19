@@ -6,6 +6,15 @@ namespace VaquinhaWebAPI.Models
     [Table("PAGAMENTO")]
     public class Pagamento
     {  
+        public Pagamento(int percentualPago, int itemDespesaId, int paganteId)
+        {
+            
+            this.PercentualPago = percentualPago;
+            this.ItemDespesaId = itemDespesaId;
+            this.PaganteId = paganteId;
+
+        }
+
         public Pagamento(int id, int percentualPago, int itemDespesaId, int paganteId)
         {
             this.Id = id;
@@ -14,7 +23,7 @@ namespace VaquinhaWebAPI.Models
             this.PaganteId = paganteId;
 
         }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID_PAGAMENTO")]
         public int Id { get; set; }
 
