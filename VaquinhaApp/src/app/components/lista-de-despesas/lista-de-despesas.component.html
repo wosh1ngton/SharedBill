@@ -1,16 +1,62 @@
-<div id="btnAdicionarDespesa">
-<button mat-raised-button color="primary" #addButton (click)="AddDespesa()">
-  Adicionar Despesa
-</button>
-<div class="filtroMes">
-  <mat-chip-listbox aria-label="Fish selection">
-    <mat-chip-option>One fish</mat-chip-option>
-    <mat-chip-option>Two fish</mat-chip-option>
-    <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
-    <mat-chip-option color="warn">Warn fish</mat-chip-option>
-  </mat-chip-listbox>
-</div>
-</div>
+<mat-grid-list cols="3" rowHeight="70px" class="containerSuperior">
+  <mat-grid-tile> 
+    <div id="btnAdicionarDespesa">
+      <button mat-raised-button color="primary" #addButton (click)="AddDespesa()">
+        Adicionar Despesa
+      </button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="filtroMes">
+      <mat-chip-listbox aria-label="Fish selection" [(ngModel)]="mesSelecionado">
+        <mat-chip-option 
+          *ngFor="let mes of filtroMes$ | async" [value]="mes.mesInteiro" 
+          (selectionChange)="reloadListaDespesas(anoSelecionado); getTotais(anoSelecionado)" [selected]="mes.selected">
+            {{mes.mesString}}         
+        </mat-chip-option>    
+      </mat-chip-listbox>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div>
+      <mat-form-field appearance="outline" class="small-mat-select">
+        <mat-label style="font-size: 14px">Ano</mat-label>
+        <mat-select [(ngModel)]="anoSelecionado" 
+        (selectionChange)="getMeses(anoSelecionado)">
+          <mat-option
+          *ngFor="let ano of Anos$ | async" [value]="ano"
+          style="font-size: 14px"> {{ano}} </mat-option>        
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-card class="calculos" *ngFor="let total of totais$ | async">
+  <mat-card-header>
+    <mat-card-title>{{total.pagante.nomePagante}}</mat-card-title>
+    <mat-card-subtitle>
+    <span class="rotuloTotais">
+      Total a Receber: <strong>  {{total.totalAReceber.toPrecision(5)}}  </strong> 
+    </span>
+    <span class="rotuloTotais">
+      Saldo: <strong> {{total.saldo.toPrecision(5)}} </strong>
+    </span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <!-- <mat-card-actions>
+    <button mat-button>{{total.totalAReceber}} </button>
+    <button mat-button>{{total.saldo}}</button>
+  </mat-card-actions> -->
+</mat-card>
+<!-- <div >
+  <table class="mat-elevation-z8" *ngFor="let total of totais$ | async">
+    <td> - </td>
+    
+  </table>
+</div> -->
+
+
 <div class="listaDeDespesas">
 <table mat-table [dataSource]="(dataSource$ | async)" class="mat-elevation-z8 lista-despesas">    
   
@@ -66,7 +112,7 @@
              <mat-icon (click)="DeleteDespesa(element.pagamentoId)"> 
                 delete
              </mat-icon>
-             <mat-icon (click)="EditDespesa(element)">
+             <mat-icon (click)="EditDespesa(element)" class="editDespesaIcon">
                 edit
              </mat-icon>
              

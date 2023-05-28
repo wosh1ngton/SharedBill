@@ -28,11 +28,10 @@ namespace VaquinhaWebAPI.Controllers
             _despesaRepository = despesaRepository;
         }
 
-        [HttpGet]
-        public IActionResult Get() 
-        {
-
-            var despesas = _despesaRepository.ListarDespesas();
+        [HttpGet("{ano:int?}")]
+        public IActionResult Get(int? ano = 2023) 
+        {           
+            var despesas = _despesaRepository.ListarDespesas(ano);
             var listaDespesas = new List<DespesaViewModel>();
             foreach (var item in despesas)
             {
@@ -52,7 +51,20 @@ namespace VaquinhaWebAPI.Controllers
             return Ok(listaDespesas);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("totais/{ano:int?}/{mes:int?}")]
+        public IActionResult GetTotais(int? ano, int? mes)
+        {
+            var totais = _despesaRepository.GetTotais(ano, mes);
+            return Ok(totais);
+        }
+        [HttpGet("totalReceber/{ano:int?}")]
+        public IActionResult GetTotalAReceber(int? ano)
+        {
+            var totais = _despesaRepository.GetTotalReceber(ano);
+            return Ok(totais);
+        }
+        
+        [HttpGet("GetById/{id}")]        
         public IActionResult GetById(int id) 
         {
             var despesa = _despesaRepository.GetDespesaById(id);
@@ -112,6 +124,20 @@ namespace VaquinhaWebAPI.Controllers
             return Ok("Despesa excluída");
         }
 
+        [HttpGet("MesesComDespesaPorAno/{ano}")]
+        public IActionResult GetMesesByAno(int ano) 
+        {
+            var meses = _despesaRepository.GetMesesComDespesa(ano);
+            return Ok(meses);
+        }
+
+        [HttpGet("AnosComDespesas")]
+        public IActionResult GetAnos() 
+        {
+            var anos = _despesaRepository.GetAnosComDespesas();
+            return Ok(anos);
+        }
         
+
     }
 }

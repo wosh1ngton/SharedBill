@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using AutoMapper.Configuration.Annotations;
 
 namespace VaquinhaWebAPI.Models
 {
@@ -38,7 +39,8 @@ namespace VaquinhaWebAPI.Models
         [Column("ID_PAGANTE")]
         public int PaganteId { get; set; }
 
-        public Pagante Pagante { get; set; }
+        public Pagante Pagante { get; set; }        
+        
 
     }
 }

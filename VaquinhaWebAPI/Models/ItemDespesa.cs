@@ -12,7 +12,7 @@ namespace VaquinhaWebAPI.Models
         }     
         public ItemDespesa(          
             string descricaoItemDespesa,
-            decimal valorItemDespesa, 
+            double valorItemDespesa, 
             int tipoItemDespesaId, 
             int categoriaItemDespesaId, 
             DateTime dtItemDespesa)
@@ -28,7 +28,7 @@ namespace VaquinhaWebAPI.Models
          public ItemDespesa(   
             int ItemDespesaId,       
             string descricaoItemDespesa,
-            decimal valorItemDespesa, 
+            double valorItemDespesa, 
             int tipoItemDespesaId, 
             int categoriaItemDespesaId, 
             DateTime dtItemDespesa)
@@ -50,7 +50,7 @@ namespace VaquinhaWebAPI.Models
         public string DescricaoItemDespesa { get; set; }
 
         [Column("NR_VALOR")]
-        public decimal ValorItemDespesa { get; set; }
+        public double ValorItemDespesa { get; set; }
 
         [Column("ID_TIPO_ITEM_DESPESA")]
         public int TipoItemDespesaId { get; set; }

@@ -43,6 +43,7 @@ export class DespesasDialogComponent {
   }
 
   editar(despesa:DespesaCadastro) {
+    console.log('despesa-dialog', despesa);
     this.despesaService.edit(despesa).pipe(
       tap(() => this.dialogRef.close(true))
     ).subscribe();
@@ -52,8 +53,7 @@ export class DespesasDialogComponent {
     
     this.despesaService.create(despesa).pipe(
       tap(() => this.dialogRef.close(true))
-    )
-     .subscribe();    
+    ).subscribe();    
     
   }
 
