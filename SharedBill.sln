@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaquinhaWebAPI", "VaquinhaWebAPI\VaquinhaWebAPI.csproj", "{64DF2689-BC22-4F2D-81F2-29667EB639D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedBillWebAPI", "SharedBillWebAPI\SharedBillWebAPI.csproj", "{64DF2689-BC22-4F2D-81F2-29667EB639D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginAPI", "LoginAPI\LoginAPI.csproj", "{CC335DDE-75AA-4F98-B6CD-7C1DF11C7DA7}"
 EndProject
