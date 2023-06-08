@@ -5,7 +5,10 @@
     <span id="tituloHeader"> SharedBill </span>
     <span class="example-spacer"></span>
 
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>login</mat-icon>
+    <button mat-icon-button class="example-icon"
+    (click)="loginService.Logout()"
+    >
+    <mat-icon>login</mat-icon>    
     </button>
+    Olá  <span> &nbsp; {{usuario.Email}}</span>
   </mat-toolbar>

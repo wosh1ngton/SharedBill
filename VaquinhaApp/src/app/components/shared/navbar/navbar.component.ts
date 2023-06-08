@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -7,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  usuario = JSON.parse(localStorage.getItem('usuario'));
+
+  constructor(public loginService: LoginService) {
+    
+    
+  }
 }

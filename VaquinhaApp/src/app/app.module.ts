@@ -13,7 +13,15 @@ import { ListaDeDespesasComponent } from './components/lista-de-despesas/lista-d
 import { HomeComponent } from './components/home/home.component';
 import { DespesasDialogComponent } from './components/despesas-dialog/despesas-dialog.component';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+import { LoginComponent } from './components/login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './services/login.service';
 
+const routes: Routes = [
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+];
 
 @NgModule({
   declarations: [
@@ -23,7 +31,8 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     ListaDeDespesasComponent,
     HomeComponent,
     DespesasDialogComponent,
-    ConfirmationDialogComponent 
+    ConfirmationDialogComponent,
+    LoginComponent 
   ],
   imports: [
     BrowserModule,
@@ -31,7 +40,8 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    MatComponentsModule
+    MatComponentsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

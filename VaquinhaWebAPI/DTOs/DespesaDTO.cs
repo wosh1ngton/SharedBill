@@ -4,7 +4,7 @@ namespace VaquinhaWebAPI.DTOs
     {
         public int      PagamentoId             { get; set; }
         public DateTime DtItemDespesa           { get; set; }
-        public string   DescricaoItemDespesa    { get; set; }
+        public string?   DescricaoItemDespesa    { get; set; }
         public double  ValorItemDespesa        { get; set; }
         public int      ItemDespesaId           {get; set;}
         public int      PaganteId               { get; set; }

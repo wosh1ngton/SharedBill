@@ -1,0 +1,32 @@
+<mat-card>
+    <mat-card-title>Login</mat-card-title>
+<mat-card-content>
+<form #f="ngForm" (ngSubmit)="submit()">
+
+  <p>
+    <mat-form-field>
+      <input type="text" [(ngModel)]="login.Email" matInput placeholder="Username" name="username">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <input type="password" [(ngModel)]="login.Password" matInput placeholder="Password" name="password">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="login.RememberMe" name="rememberMe"></mat-checkbox>  Lembrar-me
+  </p>
+
+  <p *ngIf="error" class="error">
+    {{ error }}
+  </p>
+
+  <div class="button">
+    <button type="submit" mat-button>Login</button>
+  </div>
+
+</form>
+</mat-card-content>
+</mat-card>

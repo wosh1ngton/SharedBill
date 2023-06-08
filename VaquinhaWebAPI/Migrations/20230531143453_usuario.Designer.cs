@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VaquinhaWebAPI.Data;
 
@@ -11,9 +12,11 @@ using VaquinhaWebAPI.Data;
 namespace VaquinhaWebAPI.Migrations
 {
     [DbContext(typeof(VaquinhaContext))]
-    partial class VaquinhaContextModelSnapshot : ModelSnapshot
+    [Migration("20230531143453_usuario")]
+    partial class usuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,6 +153,29 @@ namespace VaquinhaWebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TIPO_ITEM_DESPESA");
+                });
+
+            modelBuilder.Entity("VaquinhaWebAPI.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NM_USUARIO");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NM_SENHA");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("USUARIO");
                 });
 
             modelBuilder.Entity("VaquinhaWebAPI.Models.ItemDespesa", b =>

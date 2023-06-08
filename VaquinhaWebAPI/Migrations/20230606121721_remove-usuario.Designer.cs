@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VaquinhaWebAPI.Data;
 
@@ -11,9 +12,11 @@ using VaquinhaWebAPI.Data;
 namespace VaquinhaWebAPI.Migrations
 {
     [DbContext(typeof(VaquinhaContext))]
-    partial class VaquinhaContextModelSnapshot : ModelSnapshot
+    [Migration("20230606121721_remove-usuario")]
+    partial class removeusuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -18,9 +18,9 @@
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
-    <div>
+   
       <mat-form-field appearance="outline" class="small-mat-select">
-        <mat-label style="font-size: 14px">Ano</mat-label>
+        <mat-label>Ano</mat-label>
         <mat-select [(ngModel)]="anoSelecionado" 
         (selectionChange)="getMeses(anoSelecionado)">
           <mat-option
@@ -28,7 +28,7 @@
           style="font-size: 14px"> {{ano}} </mat-option>        
         </mat-select>
       </mat-form-field>
-    </div>
+   
   </mat-grid-tile>
 </mat-grid-list>
 

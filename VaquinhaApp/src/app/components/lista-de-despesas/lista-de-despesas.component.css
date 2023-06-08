@@ -1,3 +1,16 @@
+.mat-form-field {
+  height: 40px; /* Adjust the height value as needed */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  padding-top: 0; /* Adjust the top padding value as needed */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding-bottom: 2px; /* Adjust the bottom padding value as needed */
+}
+
+
 .listaDeDespesas {   
     margin: 20px;
 }
@@ -28,8 +41,10 @@
 .small-mat-select {    
   position: absolute;
   right: 5px;
-  top: 10px;  
+  top: 10px;     
 }
+
+
 
 .rotuloTotais {
   display: block;

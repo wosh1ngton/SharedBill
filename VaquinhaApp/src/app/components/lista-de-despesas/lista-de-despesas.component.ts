@@ -27,12 +27,13 @@ export class ListaDeDespesasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAnos();
     if (this.anoSelecionado == null) {
-      this.anoSelecionado = new Date().getFullYear();
+      this.anoSelecionado = 2019;
+      //this.anoSelecionado = this.Anos$.pipe(map(val:any) => {} )
     }
     this.reloadListaDespesas(this.anoSelecionado);
     this.getMeses(this.anoSelecionado);
-    this.getAnos();
     this.getTotais(this.anoSelecionado);
   }
 
@@ -44,18 +45,19 @@ export class ListaDeDespesasComponent implements OnInit {
     this.filtroMes$ = this.despesaService.getMesesFiltroPorAno(ano)
       .pipe(
         map((meses) => {
-          
-          let mes = meses.find(element => {
-            element.mesString = element.mesString.slice(0,3),
-            element.mesInteiro == this.mesSelecionado
+          if (meses) {
+            let mes = meses.find(element => {
+              element.mesString = element.mesString.slice(0, 3),
+                element.mesInteiro == this.mesSelecionado
             }
-          );
-          if (mes) {
-            mes.selected = true;
-          } else {
-            meses[0].selected = true;
-            this.mesSelecionado = meses[0].mesInteiro;
-            this.reloadListaDespesas(ano)
+            );
+            if (mes) {
+              mes.selected = true;
+            } else {
+              meses[0].selected = true;
+              this.mesSelecionado = meses[0].mesInteiro;
+              this.reloadListaDespesas(ano)
+            }
           }
           return meses;
         }), tap(() => console.log('getMeses called')))
@@ -76,13 +78,13 @@ export class ListaDeDespesasComponent implements OnInit {
 
   }
 
-  getTotais(ano?:number) {
+  getTotais(ano?: number) {
     this.totais$ = this.despesaService.getTotalReceber(ano)
       .pipe(
-        map((val:totais[]) => {          
-          return val.filter(m =>             
-             (m.mesTotalizado == this.mesSelecionado)            
-          )         
+        map((val: totais[]) => {
+          return val.filter(m =>
+            (m.mesTotalizado == this.mesSelecionado)
+          )
         }),
         map(val => this.despesaService.getSaldo(val)
         )
@@ -102,7 +104,7 @@ export class ListaDeDespesasComponent implements OnInit {
     dialogRef.afterClosed()
       .pipe(
         filter(val => !!val),
-        tap(() => this.reloadListaDespesas(this.anoSelecionado)),        
+        tap(() => this.reloadListaDespesas(this.anoSelecionado)),
         tap(() => this.getMeses(this.anoSelecionado)),
         tap((val) => console.log('valor val', val))
       ).subscribe()

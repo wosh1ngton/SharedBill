@@ -33,6 +33,9 @@ namespace VaquinhaWebAPI.Repositories
 
         public IQueryable<Pagamento> ListarDespesas(int? ano)
         {
+            if(ano == null)
+                ano = _context.ItensDespesa.Max(x => x.DtItemDespesa.Year);
+
             var despesas = _context.Pagamentos
                 .Include(x => x.ItemDespesa)
                     .ThenInclude(x => x.CategoriaItemDespesa)

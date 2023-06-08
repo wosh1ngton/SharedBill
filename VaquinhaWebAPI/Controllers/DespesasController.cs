@@ -29,8 +29,9 @@ namespace VaquinhaWebAPI.Controllers
         }
 
         [HttpGet("{ano:int?}")]
-        public IActionResult Get(int? ano = 2023) 
+        public IActionResult Get(int? ano) 
         {           
+            
             var despesas = _despesaRepository.ListarDespesas(ano);
             var listaDespesas = new List<DespesaViewModel>();
             foreach (var item in despesas)

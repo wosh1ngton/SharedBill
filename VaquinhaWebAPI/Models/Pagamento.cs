@@ -34,12 +34,12 @@ namespace VaquinhaWebAPI.Models
         [Column("ID_ITEM_DESPESA")]
         public int ItemDespesaId { get; set; }
 
-        public ItemDespesa ItemDespesa { get; set; }
+        public ItemDespesa? ItemDespesa { get; set; }
 
         [Column("ID_PAGANTE")]
         public int PaganteId { get; set; }
 
-        public Pagante Pagante { get; set; }        
+        public Pagante? Pagante { get; set; }        
         
 
     }

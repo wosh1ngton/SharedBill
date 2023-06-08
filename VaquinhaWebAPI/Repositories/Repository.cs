@@ -12,13 +12,13 @@ namespace VaquinhaWebAPI.Repositories
         {
             _vaquinhaContext = vaquinhaContext;
             _entities = _vaquinhaContext.Set<T>();
-        }      
+        }
 
         public void Add(T entity)
         {
-           _entities.Add(entity);
-           _vaquinhaContext.SaveChanges();
-        }       
+            _entities.Add(entity);
+            _vaquinhaContext.SaveChanges();
+        }
 
         public void Delete(T entity)
         {
@@ -29,20 +29,27 @@ namespace VaquinhaWebAPI.Repositories
         public IQueryable<T> GetAll()
         {
             return _entities.AsQueryable();
-        }      
+        }
 
         public T GetById(int id)
-        {            
-            return _entities.Find(id);            
-        }    
+        {
+
+            var registro = _entities.Find(id);
+
+            if (registro == null)
+            {
+                throw new NullReferenceException("registro não encontrado");
+            }
+            return registro;
+        }
 
         public void Update(T entity)
         {
             // _entities.Attach(entity);
             // _vaquinhaContext.Entry(entity).State = EntityState.Modified;                
             _vaquinhaContext.Update(entity);
-            _vaquinhaContext.SaveChanges();  
+            _vaquinhaContext.SaveChanges();
         }
-       
+
     }
 }
