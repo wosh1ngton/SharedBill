@@ -4,6 +4,7 @@ using VaquinhaWebAPI.DTOs;
 using VaquinhaWebAPI.Models;
 using VaquinhaWebAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VaquinhaWebAPI.Controllers
 {
@@ -29,25 +30,27 @@ namespace VaquinhaWebAPI.Controllers
         }
 
         [HttpGet("{ano:int?}")]
-        public IActionResult Get(int? ano) 
-        {           
-            
+        [Authorize]
+        public IActionResult Get(int? ano)
+        {          
+
+
             var despesas = _despesaRepository.ListarDespesas(ano);
             var listaDespesas = new List<DespesaViewModel>();
             foreach (var item in despesas)
             {
-                 var desp = new DespesaViewModel();  
-                 desp.PagamentoId = item.Id;               
-                 desp.DtItemDespesa = item.ItemDespesa.DtItemDespesa;
-                 desp.DescricaoItemDespesa = item.ItemDespesa.DescricaoItemDespesa;
-                 desp.PaganteId = item.PaganteId;
-                 desp.ItemDespesaId = item.ItemDespesaId;
-                 desp.ValorItemDespesa = item.ItemDespesa.ValorItemDespesa;
-                 desp.NomePagante = item.Pagante.NomePagante;
-                 desp.PercentualPago = item.PercentualPago;
-                 desp.NomeTipoItemDespesa = item.ItemDespesa.TipoItemDespesa.NomeTipoItemDespesa;
-                 desp.NomeCategoriaItemDespesa = item.ItemDespesa.CategoriaItemDespesa.NomeCategoriaItemDespesa;
-                 listaDespesas.Add(desp);
+                var desp = new DespesaViewModel();
+                desp.PagamentoId = item.Id;
+                desp.DtItemDespesa = item.ItemDespesa.DtItemDespesa;
+                desp.DescricaoItemDespesa = item.ItemDespesa.DescricaoItemDespesa;
+                desp.PaganteId = item.PaganteId;
+                desp.ItemDespesaId = item.ItemDespesaId;
+                desp.ValorItemDespesa = item.ItemDespesa.ValorItemDespesa;
+                desp.NomePagante = item.Pagante.NomePagante;
+                desp.PercentualPago = item.PercentualPago;
+                desp.NomeTipoItemDespesa = item.ItemDespesa.TipoItemDespesa.NomeTipoItemDespesa;
+                desp.NomeCategoriaItemDespesa = item.ItemDespesa.CategoriaItemDespesa.NomeCategoriaItemDespesa;
+                listaDespesas.Add(desp);
             }
             return Ok(listaDespesas);
         }
@@ -64,47 +67,47 @@ namespace VaquinhaWebAPI.Controllers
             var totais = _despesaRepository.GetTotalReceber(ano);
             return Ok(totais);
         }
-        
-        [HttpGet("GetById/{id}")]        
-        public IActionResult GetById(int id) 
+
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(int id)
         {
             var despesa = _despesaRepository.GetDespesaById(id);
-            
-            var desp = new DespesaDTO();  
-                 desp.PagamentoId = despesa.Id;               
-                 desp.DtItemDespesa = despesa.ItemDespesa.DtItemDespesa;
-                 desp.DescricaoItemDespesa = despesa.ItemDespesa.DescricaoItemDespesa;
-                 desp.ValorItemDespesa = despesa.ItemDespesa.ValorItemDespesa;
-                 desp.PaganteId = despesa.PaganteId;
-                 desp.PercentualPago = despesa.PercentualPago;
-                 desp.TipoItemDespesaId = despesa.ItemDespesa.TipoItemDespesaId;
-                 desp.CategoriaItemDespesaId = despesa.ItemDespesa.CategoriaItemDespesaId;
+
+            var desp = new DespesaDTO();
+            desp.PagamentoId = despesa.Id;
+            desp.DtItemDespesa = despesa.ItemDespesa.DtItemDespesa;
+            desp.DescricaoItemDespesa = despesa.ItemDespesa.DescricaoItemDespesa;
+            desp.ValorItemDespesa = despesa.ItemDespesa.ValorItemDespesa;
+            desp.PaganteId = despesa.PaganteId;
+            desp.PercentualPago = despesa.PercentualPago;
+            desp.TipoItemDespesaId = despesa.ItemDespesa.TipoItemDespesaId;
+            desp.CategoriaItemDespesaId = despesa.ItemDespesa.CategoriaItemDespesaId;
             return Ok(desp);
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult Put(int id, [FromBody] DespesaDTO model) 
+        public IActionResult Put(int id, [FromBody] DespesaDTO model)
         {
             var despesa = _despesaRepository.GetDespesaById(id);
 
-            if(despesa == null) return BadRequest("Despesa não encontrada");
+            if (despesa == null) return BadRequest("Despesa não encontrada");
 
             model.ItemDespesaId = despesa.ItemDespesaId;
             var itemDespesa = _mapper.Map<ItemDespesa>(model);
             var pgto = _mapper.Map<Pagamento>(model);
-            _despesaRepository.UpdateDespesa(itemDespesa,pgto);
-           
+            _despesaRepository.UpdateDespesa(itemDespesa, pgto);
+
             return Ok();
         }
-        
-        [HttpGet("TiposDespesas")]        
+
+        [HttpGet("TiposDespesas")]
         public IActionResult GetTiposDespesas()
         {
             var tiposDespesa = _repository.GetAll();
             return Ok(tiposDespesa);
         }
 
-        [HttpGet("CategoriasDespesas")]        
+        [HttpGet("CategoriasDespesas")]
         public IActionResult GetCategoriasDespesas()
         {
             var tiposDespesa = _categoriaItemDespesa.GetAll();
@@ -120,25 +123,26 @@ namespace VaquinhaWebAPI.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {            
+        {
             _despesaRepository.ExcluirDespesa(id);
             return Ok("Despesa excluída");
         }
 
         [HttpGet("MesesComDespesaPorAno/{ano}")]
-        public IActionResult GetMesesByAno(int ano) 
+        public IActionResult GetMesesByAno(int ano)
         {
             var meses = _despesaRepository.GetMesesComDespesa(ano);
             return Ok(meses);
         }
 
         [HttpGet("AnosComDespesas")]
-        public IActionResult GetAnos() 
+        
+        public IActionResult GetAnos()
         {
             var anos = _despesaRepository.GetAnosComDespesas();
             return Ok(anos);
         }
-        
+
 
     }
 }

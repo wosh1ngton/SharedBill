@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { login } from '../models/login';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
@@ -11,6 +11,7 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 
 export class LoginService {
   private readonly baseUrl = environment.loginUrlAPI;
+  
   
   constructor(private http: HttpClient, public router: Router) { }
 
@@ -32,12 +33,18 @@ export class LoginService {
   }
 
   logar(usuario: login): Observable<any> {
-    return this.http.post(this.baseUrl + 'Login/login',usuario);
+    console.log(usuario);
+    return this.http.post(this.baseUrl + 'Login/login',usuario, { responseType: 'text' });
   }
 
   Logout() {   
+      this.http.get(this.baseUrl+'Login/logout').subscribe((val) => console.log(val));
       localStorage.removeItem('usuario');
       this.router.navigate(['']);    
+  }
+
+  currentUser(): any {
+    return this.http.get<any>(this.baseUrl + 'Login/usuarioLogado');
   }
 
 }

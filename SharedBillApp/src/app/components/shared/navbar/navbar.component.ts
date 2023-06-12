@@ -8,11 +8,10 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-
-  usuario = JSON.parse(localStorage.getItem('usuario'));
-
-  constructor(public loginService: LoginService) {
-    
-    
+  usuario
+  constructor(public loginService: LoginService) { 
+    var objeto = JSON.parse(JSON.parse(localStorage.getItem('usuario')));
+    this.usuario = objeto.User;  
   }
+ 
 }

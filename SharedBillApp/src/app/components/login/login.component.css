@@ -1,28 +1,40 @@
 :host {
-    display: flex;
-    justify-content: center;
-    margin: 100px 0px;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 100px 0px;
+}
 
-  .mat-form-field {
-    width: 100%;
-    min-width: 300px;
-  }
+.mat-mdc-form-field {
+  min-width: 350px;
+}
+.logo {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 200px;
+}
 
-  mat-card-title,
-  mat-card-content {
-    display: flex;
-    justify-content: center;
-  }
+.mat-form-field {
+  width: 100%;
 
-  .error {
-    padding: 16px;
-    width: 300px;
-    color: white;
-    background-color: red;
-  }
+}
 
-  .button {
-    display: flex;
-    justify-content: flex-end;
-  }
+mat-card-title,
+mat-card-content {
+  display: flex;
+  padding-top: 20px;
+  justify-content: center;
+}
+
+.error {
+  padding: 16px;
+  color: white;
+  background-color: red;
+}
+
+button.loginButton {
+  min-width: 350px;
+  display: flex;
+  color: #ffffff;
+  background-color: rgb(60, 116, 107);
+
+}

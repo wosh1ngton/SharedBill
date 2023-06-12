@@ -10,6 +10,10 @@
   padding-bottom: 2px; /* Adjust the bottom padding value as needed */
 }
 
+#btnAdicionarDespesa button {
+  background-color: rgb(60, 116, 107);
+  color: #fff;
+}
 
 .listaDeDespesas {   
     margin: 20px;
@@ -44,7 +48,14 @@
   top: 10px;     
 }
 
+ .filtroMes .mat-mdc-chip-selected {
+  background-color: rgb(60, 116, 107);
+  color:#fff;
+} 
 
+/* .mat-chip-list ::ng-deep .mat-chip-selected {
+  color: red; 
+} */
 
 .rotuloTotais {
   display: block;

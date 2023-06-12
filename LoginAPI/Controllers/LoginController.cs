@@ -1,20 +1,24 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using LoginAPI.Models;
-
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoginAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class LoginController : ControllerBase
-    {        
+    {
         private readonly SignInManager<ApplicationUser> _signInManager;
-     
-        public LoginController(SignInManager<ApplicationUser> signInManager)
-        {      
+        private readonly UserManager<ApplicationUser> _userManager;
+        public string Username { get; set; }
+        public Usuario usuario { get; set; }
+        public LoginController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        {
             _signInManager = signInManager;
-            
+            _userManager = userManager;
+
         }
         //  public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         // {
@@ -54,14 +58,46 @@ namespace LoginAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Logar([FromBody] Usuario user)
         {
+            var usuarioEncontrado = await _userManager.FindByEmailAsync(user.Email!);
+            if (usuarioEncontrado == null)
+            {
+                return NotFound();
+            }
+            var result = await _signInManager.PasswordSignInAsync(
+                usuarioEncontrado, user.Password, user.RememberMe, false);
 
-            var result = await _signInManager.PasswordSignInAsync(user.Email!, user.Password, user.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
-                {                    
-                    return Ok(result);
-                }
-           
-           return BadRequest("Login inválido");
+            {
+                var usuario = await _userManager.FindByIdAsync(usuarioEncontrado.Id);
+                var usuarioJson = JsonConvert.SerializeObject(usuario!.UserName!);
+
+               var cookie = Response.Headers.SetCookie;
+               //var teste = Request.Cookies;
+               
+                Response.Headers.Add("User",usuarioJson);
+
+                var jsonResponse = JsonConvert.SerializeObject(Response.Headers);
+               // await LoadAsync(usuario);
+                return Ok(jsonResponse);
+            }
+
+            return BadRequest("Login inválido");
+        }
+        
+        [HttpGet("logout")]        
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();          
+        }
+
+
+
+        [HttpGet("testeAPI")]
+        
+        public IActionResult testandoApi() 
+        {            
+            return Ok("teste ok");
         }
     }
 }

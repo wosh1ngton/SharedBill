@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DespesaView } from '../models/despesaView';
 import { totais } from '../models/totais';
@@ -36,9 +36,11 @@ export class DespesasService {
   }
 
   getDespesas(ano?: number): Observable<DespesaView[]> {
-    return this.http.get<DespesaView[]>(this.baseUrl + 'Despesas/' + ano).pipe(
+    
+    return this.http.get<DespesaView[]>(this.baseUrl + 'Despesas/' + ano, {withCredentials:true}).pipe(      
       map((res: DespesaView[]) => {
-        //console.log(new Date(res[0].dtItemDespesa).getMonth());
+        console.log('log oculto',res);
+        shareReplay();        
         return res;
       })
 
@@ -58,7 +60,7 @@ export class DespesasService {
   }
 
   getAnosComDespesas(): Observable<any> {
-    return this.http.get(this.baseUrl + 'Despesas/AnosComDespesas');
+    return this.http.get(this.baseUrl + 'Despesas/AnosComDespesas',{withCredentials:true});
   }
 
   getTotalReceber(ano: number): Observable<any> {

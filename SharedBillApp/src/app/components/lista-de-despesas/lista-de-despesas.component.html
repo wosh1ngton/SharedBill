@@ -1,17 +1,19 @@
-<mat-grid-list cols="3" rowHeight="70px" class="containerSuperior">
+<mat-grid-list cols="3" rowHeight="85px" class="containerSuperior">
   <mat-grid-tile> 
     <div id="btnAdicionarDespesa">
-      <button mat-raised-button color="primary" #addButton (click)="AddDespesa()">
+      <button mat-raised-button #addButton (click)="AddDespesa()">
         Adicionar Despesa
       </button>
     </div>
   </mat-grid-tile>
+
   <mat-grid-tile>
     <div class="filtroMes">
       <mat-chip-listbox aria-label="Fish selection" [(ngModel)]="mesSelecionado">
         <mat-chip-option 
           *ngFor="let mes of filtroMes$ | async" [value]="mes.mesInteiro" 
-          (selectionChange)="reloadListaDespesas(anoSelecionado); getTotais(anoSelecionado)" [selected]="mes.selected">
+          (selectionChange)="reloadListaDespesas(anoSelecionado); getTotais(anoSelecionado)" 
+          [selected]="mes.selected">
             {{mes.mesString}}         
         </mat-chip-option>    
       </mat-chip-listbox>
@@ -25,7 +27,8 @@
         (selectionChange)="getMeses(anoSelecionado)">
           <mat-option
           *ngFor="let ano of Anos$ | async" [value]="ano"
-          style="font-size: 14px"> {{ano}} </mat-option>        
+          style="font-size: 14px"> {{ano}} </mat-option>   
+          <mat-option value="2020">2020</mat-option>     
         </mat-select>
       </mat-form-field>
    
@@ -44,17 +47,8 @@
     </span>
     </mat-card-subtitle>
   </mat-card-header>
-  <!-- <mat-card-actions>
-    <button mat-button>{{total.totalAReceber}} </button>
-    <button mat-button>{{total.saldo}}</button>
-  </mat-card-actions> -->
 </mat-card>
-<!-- <div >
-  <table class="mat-elevation-z8" *ngFor="let total of totais$ | async">
-    <td> - </td>
-    
-  </table>
-</div> -->
+
 
 
 <div class="listaDeDespesas">

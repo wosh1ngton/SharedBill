@@ -2,11 +2,20 @@
     flex: 1 1 auto;
   }
 
-#tituloHeader {
-    margin-left: 5px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
 
 .sidenav-container {
   height: 850px;
+}
+
+mat-toolbar {
+  background-color: rgb(60, 116, 107);
+  color: #fff;  
+}
+
+.logo {  
+  margin: 20px;
+  padding: 0;
+  border: 0;
+  width: 180px;
 }
