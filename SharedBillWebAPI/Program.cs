@@ -1,6 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using VaquinhaWebAPI.Data;
 using VaquinhaWebAPI.Models;
 using VaquinhaWebAPI.Repositories;
@@ -8,24 +11,6 @@ using VaquinhaWebAPI.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-DirectoryInfo GetKyRingDirectoryInfo()
-{
-    string applicationBasePath = System.AppContext.BaseDirectory;
-    DirectoryInfo directoryInof = new DirectoryInfo(applicationBasePath);
-    string keyRingPath = builder.Configuration.GetSection("AppKeys").GetValue<string>("keyRingPath");
-    do
-    {
-        directoryInof = directoryInof.Parent.Parent.Parent.Parent;
-        DirectoryInfo keyRingDirectoryInfo = new DirectoryInfo(directoryInof.FullName + keyRingPath);
-        if (keyRingDirectoryInfo.Exists)
-        {
-            return keyRingDirectoryInfo;
-        }
-    }
-    while (directoryInof.Parent != null);
-    throw new Exception("key ring path not found");
-}
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -34,34 +19,27 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("AuthenticationSecret")!);
 
 builder.Services.AddDbContext<VaquinhaContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
-builder.Services.AddDataProtection().PersistKeysToFileSystem(GetKyRingDirectoryInfo()).SetApplicationName("SharedCookieApp");
-
-builder.Services.Configure<CookiePolicyOptions>(options =>
+builder.Services.AddAuthentication(options =>
 {
-    // This lambda determines whether user consent for nonessential cookies is needed for a given request.
-    options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.None;
-});
-
-
-
-builder.Services.AddAuthentication("Identity.Application").AddCookie("Identity.Application", option =>
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
 {
-    option.Cookie.Name = ".AspNet.SharedCookie";
-    option.Events.OnRedirectToLogin = (context) =>
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        context.Response.StatusCode = 401;
-        return Task.CompletedTask;
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
     };
 });
 
@@ -91,7 +69,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
-app.UseCookiePolicy();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

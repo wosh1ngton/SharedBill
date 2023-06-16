@@ -136,7 +136,7 @@ namespace VaquinhaWebAPI.Controllers
         }
 
         [HttpGet("AnosComDespesas")]
-        
+        [Authorize]
         public IActionResult GetAnos()
         {
             var anos = _despesaRepository.GetAnosComDespesas();

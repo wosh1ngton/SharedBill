@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using LoginAPI.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using LoginAPI.Services;
 
 namespace LoginAPI.Controllers
 {
@@ -58,27 +59,27 @@ namespace LoginAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Logar([FromBody] Usuario user)
         {
+            //recupera o usuário
+            user.Username = user.Email;
             var usuarioEncontrado = await _userManager.FindByEmailAsync(user.Email!);
+            
+            //verifica se o usuário existe
             if (usuarioEncontrado == null)
             {
                 return NotFound();
             }
+
             var result = await _signInManager.PasswordSignInAsync(
                 usuarioEncontrado, user.Password, user.RememberMe, false);
 
             if (result.Succeeded)
             {
-                var usuario = await _userManager.FindByIdAsync(usuarioEncontrado.Id);
-                var usuarioJson = JsonConvert.SerializeObject(usuario!.UserName!);
-
-               var cookie = Response.Headers.SetCookie;
-               //var teste = Request.Cookies;
-               
-                Response.Headers.Add("User",usuarioJson);
-
-                var jsonResponse = JsonConvert.SerializeObject(Response.Headers);
+                
+                var token = TokenService.GenerateToken(user);  
+                Response.Headers.Add("Authorization",$"Bearer {token}");
+                //var jsonResponse = JsonConvert.SerializeObject(Response.Headers);
                // await LoadAsync(usuario);
-                return Ok(jsonResponse);
+                return Ok(new AuthenticatedResponse{ Token = token });
             }
 
             return BadRequest("Login inválido");
@@ -88,13 +89,14 @@ namespace LoginAPI.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            var headers = Response.Headers;
             return Ok();          
         }
 
 
 
         [HttpGet("testeAPI")]
-        
+        [Authorize]
         public IActionResult testandoApi() 
         {            
             return Ok("teste ok");

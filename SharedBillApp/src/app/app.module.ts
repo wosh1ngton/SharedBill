@@ -16,13 +16,16 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
 import { LoginComponent } from './components/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './services/login.service';
+import { JwtModule } from '@auth0/angular-jwt';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
 ];
-
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +39,13 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:5008","localhost:5247",],
+        disallowedRoutes: []
+      }
+    }),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
