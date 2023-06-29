@@ -1,0 +1,29 @@
+.container {
+    display: grid;       
+    grid-template-columns: [col-1]14%  [col-2]70% [col-3]14%;    
+    place-content: center;
+    place-items: center;
+    gap: 5px;
+}
+.toolbar {
+    justify-self: stretch;
+    grid-column: span 3;    
+}
+
+.main-content {    
+    grid-column: col-2;    
+    justify-self: stretch;
+    border: 1px solid #f4f4f4;       
+}
+.footer {
+    height: 50px;    
+    grid-column: span 3; 
+    text-align: center;  
+    justify-self: stretch;
+    color: #000;
+    background-color: #fff;
+}
+.footer span {  
+    display: block;  
+    padding-top: 15px;
+}

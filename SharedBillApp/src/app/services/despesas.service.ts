@@ -4,6 +4,7 @@ import { Observable, map, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DespesaView } from '../models/despesaView';
 import { totais } from '../models/totais';
+import { DespesaPorMesView } from '../models/despesaPorMesView';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class DespesasService {
 
   private readonly baseUrl = environment.mainUrlAPI;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {  }
+
+  loadDespesas$:Observable<any>;
 
   getPagantes() {
     return this.http.get(this.baseUrl + 'pagantes');
@@ -35,17 +38,31 @@ export class DespesasService {
     return this.http.put(this.baseUrl + 'Despesas/' + despesa.pagamentoId, despesa);
   }
 
-  getDespesas(ano?: number): Observable<DespesaView[]> {
-    
-    return this.http.get<DespesaView[]>(this.baseUrl + 'Despesas/' + ano, {withCredentials:true}).pipe(      
-      map((res: DespesaView[]) => {
-        console.log('log oculto',res);
-        shareReplay();        
+  loadDespesasPorAno(ano?: number) {
+    this.loadDespesas$ = this.http.get<DespesaPorMesView[]>(this.baseUrl + 'Despesas/' + ano, {withCredentials:true})
+    .pipe(      
+      map((res: DespesaPorMesView[]) => {                        
         return res;
       })
-
-    );
+    );  
   }
+
+  filtrarPorMes(mes: number): Observable<DespesaView[]> {
+    return this.loadDespesas$
+        .pipe(
+            map(
+                (desp) => {
+                  console.log('aqui!',desp);
+                  
+                  return desp.find(despesa => {                            
+                        console.log('mes comparador',despesa['Mes']);
+                        console.log('mes clicado', mes)
+                        return despesa.Mes == mes
+                  }).Despesas;
+                }),
+            tap((val) => console.log('valor filtrado por mes', val))
+        )
+}
 
   deleteDespesaById(id: number) {
     return this.http.delete(this.baseUrl + 'Despesas/' + id, { responseType: 'text' });

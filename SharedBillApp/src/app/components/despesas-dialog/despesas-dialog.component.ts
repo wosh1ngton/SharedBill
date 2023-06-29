@@ -36,8 +36,7 @@ export class DespesasDialogComponent {
   
 
   ngOnInit(): void {
-    this.pagantes = this.despesaService.getPagantes();
-  
+    this.pagantes = this.despesaService.getPagantes();  
     this.categoriasDespesas = this.despesaService.getCategoriasDespesas();
     this.tiposDespesas = this.despesaService.getTipoDespesas();
   }

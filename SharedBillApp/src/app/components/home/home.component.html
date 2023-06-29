@@ -1,11 +1,13 @@
-<div>
-  <div layout="row" layout-md>
-<app-navbar></app-navbar>
 
-    <!-- <mat-drawer mode="side" opened>
-      <app-despesas (despesasChanged)="listaDeDespesas.reloadListaDespesas()"></app-despesas>
-    </mat-drawer> -->
-
-<app-lista-de-despesas #listaDeDespesas ></app-lista-de-despesas>
-</div>
+<div class="container">
+  <div class="toolbar">
+    <app-navbar></app-navbar>
+  </div>
+  <div class="main-content">  
+    <app-loading></app-loading>  
+    <app-lista-de-despesas #listaDeDespesas></app-lista-de-despesas>
+  </div>
+  <div class="footer">
+    <span>Todos os direitos reservados | SharedBill - 2023 </span>
+  </div>
 </div>

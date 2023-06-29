@@ -1,8 +1,23 @@
 mat-form-field {
     display: block;
     width: 100%;    
-    margin-top: -15px;
+    margin-top: -15px;    
   }
 .tituloForm {
     margin-top: 10px;
+}
+
+mat-dialog-actions {
+  margin-left: 15px;
+}
+#save-button button {
+  background-color: rgb(60, 116, 107);
+  color: #fff;
+  margin: 5px;  
+}
+
+#create-button button {
+  background-color: rgb(60, 116, 107);
+  color: #fff;
+  margin: 5px;  
 }

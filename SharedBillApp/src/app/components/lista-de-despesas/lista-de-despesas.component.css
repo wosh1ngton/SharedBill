@@ -1,64 +1,77 @@
-.mat-form-field {
-  height: 40px; /* Adjust the height value as needed */
+/* Filtros */
+.container-filtros {
+  
+  display: grid;  
+  grid-template-columns: [coluna-btn-add] 20% [coluna-filtro-mes] 60% [coluna-filtro-ano]20%;
+  column-gap: 10px;  
+  height: auto;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-wrapper {
-  padding-top: 0; /* Adjust the top padding value as needed */
+#divBtnAdicionarDespesa {
+  grid-column: coluna-btn-add;
+  justify-self: stretch;  
+  margin-left: 20px;
+  margin-top: 10px;  
 }
 
-.mat-form-field-appearance-outline .mat-form-field-infix {
-  padding-bottom: 2px; /* Adjust the bottom padding value as needed */
-}
-
-#btnAdicionarDespesa button {
+#divBtnAdicionarDespesa button { 
   background-color: rgb(60, 116, 107);
   color: #fff;
+  font-size: 12px;
 }
 
-.listaDeDespesas {   
-    margin: 20px;
-}
-.calculos {
-  margin: 20px;
+.divFiltroMes {
+  grid-column: coluna-filtro-mes;
+  margin-top: 10px;
+  justify-self: stretch;
+
 }
 
-#btnAdicionarDespesa {
-  position: absolute;
-  left: 5px;
-  top: 10px;  
+.divFiltroMes .mat-mdc-chip-selected {  
+  background-color: rgb(60, 116, 107);
+  color:#fff;  
+} 
+
+.divFiltroAno {
+  grid-column: coluna-filtro-ano;  
+  margin-top: 10px;
+  margin-right: 20px;
 }
-.filtroMes {
-  position: absolute;
-  left: 5px;
-  top: 10px;
+
+
+.divFiltroAno mat-form-field {  
+  width: 80%;  
   
 }
+.divFiltroAno mat-select {
+  font-size: 14px;  
+}
+
+
+/* Totalizadores */
+.container-rotulos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-content: center;
+  place-items: center;  
+}
+
+.calculos {
+  background-color: aliceblue;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  justify-self: stretch;
+}
+#rotulo-saldo {
+  margin-left: 20px;
+}
+/* Tabela de despesas */
+
 .editDespesaIcon {
   transform: rotate(285deg);
 }
 
-.containerSuperior {
-  margin-left: 20px;
-  margin-right: 20px;  
-}
-
-.small-mat-select {    
-  position: absolute;
-  right: 5px;
-  top: 10px;     
-}
-
- .filtroMes .mat-mdc-chip-selected {
-  background-color: rgb(60, 116, 107);
-  color:#fff;
-} 
-
-/* .mat-chip-list ::ng-deep .mat-chip-selected {
-  color: red; 
-} */
-
-.rotuloTotais {
-  display: block;
-  width: 250px;
-  float: left;
+.listaDeDespesas {   
+  margin: 20px;
 }

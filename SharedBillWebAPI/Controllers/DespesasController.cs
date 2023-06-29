@@ -5,6 +5,8 @@ using VaquinhaWebAPI.Models;
 using VaquinhaWebAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using SharedBillWebApi.DTOs;
+using Newtonsoft.Json;
 
 namespace VaquinhaWebAPI.Controllers
 {
@@ -32,27 +34,36 @@ namespace VaquinhaWebAPI.Controllers
         [HttpGet("{ano:int?}")]
         [Authorize]
         public IActionResult Get(int? ano)
-        {          
-
-
-            var despesas = _despesaRepository.ListarDespesas(ano);
-            var listaDespesas = new List<DespesaViewModel>();
-            foreach (var item in despesas)
+        { 
+            var despesas = _despesaRepository.ListarDespesasPorMes(ano);
+            var listaDespesas = new List<DespesasPorMesViewModel>();
+            
+            foreach (var mes in despesas)
             {
-                var desp = new DespesaViewModel();
-                desp.PagamentoId = item.Id;
-                desp.DtItemDespesa = item.ItemDespesa.DtItemDespesa;
-                desp.DescricaoItemDespesa = item.ItemDespesa.DescricaoItemDespesa;
-                desp.PaganteId = item.PaganteId;
-                desp.ItemDespesaId = item.ItemDespesaId;
-                desp.ValorItemDespesa = item.ItemDespesa.ValorItemDespesa;
-                desp.NomePagante = item.Pagante.NomePagante;
-                desp.PercentualPago = item.PercentualPago;
-                desp.NomeTipoItemDespesa = item.ItemDespesa.TipoItemDespesa.NomeTipoItemDespesa;
-                desp.NomeCategoriaItemDespesa = item.ItemDespesa.CategoriaItemDespesa.NomeCategoriaItemDespesa;
-                listaDespesas.Add(desp);
+                var despVM = new DespesasPorMesViewModel();
+                despVM.Mes = mes.Mes;
+                //var lista = new List<DespesaViewModel>();
+                foreach(var item in mes.Despesas) 
+                {
+                    var desp = new DespesaViewModel();
+                    desp.PagamentoId = item.Id;
+                    desp.DtItemDespesa = item.ItemDespesa.DtItemDespesa;
+                    desp.DescricaoItemDespesa = item.ItemDespesa.DescricaoItemDespesa;
+                    desp.PaganteId = item.PaganteId;
+                    desp.ItemDespesaId = item.ItemDespesaId;
+                    desp.ValorItemDespesa = item.ItemDespesa.ValorItemDespesa;
+                    desp.NomePagante = item.Pagante.NomePagante;
+                    desp.PercentualPago = item.PercentualPago;
+                    desp.NomeTipoItemDespesa = item.ItemDespesa.TipoItemDespesa.NomeTipoItemDespesa;
+                    desp.NomeCategoriaItemDespesa = item.ItemDespesa.CategoriaItemDespesa.NomeCategoriaItemDespesa;                                        
+                    despVM.Despesas.Add(desp);  
+                }
+                
+                listaDespesas.Add(despVM);
+                
             }
-            return Ok(listaDespesas);
+            var jsonResponse = JsonConvert.SerializeObject(listaDespesas);
+            return Ok(jsonResponse);
         }
 
         [HttpGet("totais/{ano:int?}/{mes:int?}")]
@@ -82,7 +93,8 @@ namespace VaquinhaWebAPI.Controllers
             desp.PercentualPago = despesa.PercentualPago;
             desp.TipoItemDespesaId = despesa.ItemDespesa.TipoItemDespesaId;
             desp.CategoriaItemDespesaId = despesa.ItemDespesa.CategoriaItemDespesaId;
-            return Ok(desp);
+            var jsonResult = JsonConvert.SerializeObject(desp);
+            return Ok(jsonResult);
         }
 
         [HttpPut("{id:int}")]

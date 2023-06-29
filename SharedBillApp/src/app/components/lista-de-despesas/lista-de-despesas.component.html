@@ -1,118 +1,114 @@
-<mat-grid-list cols="3" rowHeight="85px" class="containerSuperior">
-  <mat-grid-tile> 
-    <div id="btnAdicionarDespesa">
-      <button mat-raised-button #addButton (click)="AddDespesa()">
-        Adicionar Despesa
-      </button>
-    </div>
-  </mat-grid-tile>
+<div class="container-filtros">
 
-  <mat-grid-tile>
-    <div class="filtroMes">
-      <mat-chip-listbox aria-label="Fish selection" [(ngModel)]="mesSelecionado">
-        <mat-chip-option 
-          *ngFor="let mes of filtroMes$ | async" [value]="mes.mesInteiro" 
-          (selectionChange)="reloadListaDespesas(anoSelecionado); getTotais(anoSelecionado)" 
-          [selected]="mes.selected">
-            {{mes.mesString}}         
-        </mat-chip-option>    
-      </mat-chip-listbox>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-   
-      <mat-form-field appearance="outline" class="small-mat-select">
-        <mat-label>Ano</mat-label>
-        <mat-select [(ngModel)]="anoSelecionado" 
-        (selectionChange)="getMeses(anoSelecionado)">
-          <mat-option
-          *ngFor="let ano of Anos$ | async" [value]="ano"
-          style="font-size: 14px"> {{ano}} </mat-option>   
-          <mat-option value="2020">2020</mat-option>     
-        </mat-select>
-      </mat-form-field>
-   
-  </mat-grid-tile>
-</mat-grid-list>
+  <div id="divBtnAdicionarDespesa">
+    <button mat-raised-button #addButton (click)="AddDespesa()">
+      Adicionar Despesa
+    </button>
+  </div>
 
-<mat-card class="calculos" *ngFor="let total of totais$ | async">
-  <mat-card-header>
-    <mat-card-title>{{total.pagante.nomePagante}}</mat-card-title>
-    <mat-card-subtitle>
-    <span class="rotuloTotais">
-      Total a Receber: <strong>  {{total.totalAReceber.toPrecision(5)}}  </strong> 
-    </span>
-    <span class="rotuloTotais">
-      Saldo: <strong> {{total.saldo.toPrecision(5)}} </strong>
-    </span>
-    </mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
+  <div class="divFiltroMes">
+    <mat-chip-listbox aria-label="Selecionar Mês" [(ngModel)]="mesSelecionado">
+      <mat-chip-option *ngFor="let mes of filtroMes$ | async" [value]="mes.mesInteiro"
+        (click)="reloadListaDespesasPorMes(mesSelecionado); getTotais(anoSelecionado)" [selected]="mes.selected">
+        {{mes.mesString}}
+      </mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+
+  <div class="divFiltroAno">
+    <mat-form-field appearance="fill">
+      <mat-label>Ano</mat-label>
+      <mat-select [(ngModel)]="anoSelecionado" (selectionChange)="getAnos()">
+        <mat-option *ngFor="let ano of Anos$ | async" [value]="ano"> {{ano}} </mat-option>        
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</div>
+
+<div class="container-rotulos">
+
+  <mat-card class="calculos" *ngFor="let total of totais$ | async">
+    <mat-card-header>
+      <mat-card-title>{{total.pagante.nomePagante}}</mat-card-title>
+      <mat-card-subtitle>
+        <span id="rotulo-total">
+          Total a Receber: <strong> {{total.totalAReceber.toPrecision(5)}} </strong>
+        </span>
+        <span id="rotulo-saldo">
+          Saldo: <strong> {{total.saldo.toPrecision(5)}} </strong>
+        </span>
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+</div>
+
 
 
 
 <div class="listaDeDespesas">
-<table mat-table [dataSource]="(dataSource$ | async)" class="mat-elevation-z8 lista-despesas">    
-  
+  <table mat-table [dataSource]="(dataSource$ | async)" class="mat-elevation-z8 lista-despesas">
+
     <!-- data da depesa -->
     <ng-container matColumnDef="DtItemDespesa">
       <th mat-header-cell *matHeaderCellDef> Data da despesa </th>
-      <td mat-cell *matCellDef="let element"> {{element.dtItemDespesa | date: 'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.DtItemDespesa | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
-  
+
     <!-- descrição -->
     <ng-container matColumnDef="DescricaoItemDespesa">
       <th mat-header-cell *matHeaderCellDef> Descrição </th>
-      <td mat-cell *matCellDef="let element"> {{element.descricaoItemDespesa}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.DescricaoItemDespesa}} </td>
     </ng-container>
-  
+
     <!-- valor -->
     <ng-container matColumnDef="ValorItemDespesa">
       <th mat-header-cell *matHeaderCellDef> Valor </th>
-      <td mat-cell *matCellDef="let element"> {{element.valorItemDespesa}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.ValorItemDespesa}} </td>
     </ng-container>
-  
+
     <!-- pagante -->
     <ng-container matColumnDef="NomePagante">
       <th mat-header-cell *matHeaderCellDef> Pagante </th>
-      <td mat-cell *matCellDef="let element"> {{element.nomePagante }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.NomePagante }} </td>
     </ng-container>
 
 
     <!-- % pago -->
     <ng-container matColumnDef="PercentualPago">
       <th mat-header-cell *matHeaderCellDef> % pago </th>
-      <td mat-cell *matCellDef="let element"> {{element.percentualPago}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.PercentualPago}} </td>
     </ng-container>
-  
+
     <!-- tipo despesa -->
     <ng-container matColumnDef="TipoDespesa">
       <th mat-header-cell *matHeaderCellDef> Tipo de despesa </th>
-      <td mat-cell *matCellDef="let element"> {{element.nomeTipoItemDespesa}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.NomeTipoItemDespesa}} </td>
     </ng-container>
 
-      <!-- categoria -->
-      <ng-container matColumnDef="CategoriaDespesa">
-        <th mat-header-cell *matHeaderCellDef> Categoria </th>
-        <td mat-cell *matCellDef="let element"> {{element.nomeCategoriaItemDespesa}} </td>
-      </ng-container>      
+    <!-- categoria -->
+    <ng-container matColumnDef="CategoriaDespesa">
+      <th mat-header-cell *matHeaderCellDef> Categoria </th>
+      <td mat-cell *matCellDef="let element"> {{element.NomeCategoriaItemDespesa}} </td>
+    </ng-container>
 
-         <!-- Opções -->
-         <ng-container matColumnDef="options">
-          <th mat-header-cell *matHeaderCellDef> Opções </th>
-          <td mat-cell *matCellDef="let element">
+    <!-- Opções -->
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef> Opções </th>
+      <td mat-cell *matCellDef="let element">
 
-          
-             <mat-icon (click)="DeleteDespesa(element.pagamentoId)"> 
-                delete
-             </mat-icon>
-             <mat-icon (click)="EditDespesa(element)" class="editDespesaIcon">
-                edit
-             </mat-icon>
-             
-          </td>
-        </ng-container>  
-  
+
+        <mat-icon (click)="DeleteDespesa(element.PagamentoId)">
+          delete
+        </mat-icon>
+        <mat-icon (click)="EditDespesa(element)" class="editDespesaIcon">
+          edit
+        </mat-icon>
+
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>

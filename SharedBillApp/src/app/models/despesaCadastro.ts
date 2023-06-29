@@ -1,12 +1,12 @@
 export class DespesaCadastro 
 {
-    pagamentoId: string;
-    dtItemDespesa: Date;
-    descricaoItemDespesa: string;
-    valorItemDespesa: string;
-    itemdDespesaId: string;
-    paganteId: string;
-    percentualPago: string;        
-    tipoItemDespesaId: string;     
-    categoriaItemDespesaId: string;
+    PagamentoId: string;
+    DtItemDespesa: Date;
+    DescricaoItemDespesa: string;
+    ValorItemDespesa: string;
+    ItemdDespesaId: string;
+    PaganteId: string;
+    PercentualPago: string;        
+    TipoItemDespesaId: string;     
+    CategoriaItemDespesaId: string;
 }

@@ -17,6 +17,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './services/login.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { LoadingComponent } from './components/loading/loading.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -35,7 +36,8 @@ export function tokenGetter() {
     HomeComponent,
     DespesasDialogComponent,
     ConfirmationDialogComponent,
-    LoginComponent 
+    LoginComponent,
+    LoadingComponent 
   ],
   imports: [
     BrowserModule,

@@ -1,15 +1,15 @@
 export class DespesaView
 {
-    pagamentoId: string;
-    dtItemDespesa: Date;
-    descricaoItemDespesa: string;
-    valorItemDespesa: string;
-    itemDespesaId: string;
-    paganteId: string;
-    nomePagante: string;
-    percentualPago: string;        
-    nomeTipoItemDespesa: string;     
-    nomeCategoriaItemDespesa: string;
+    PagamentoId: string;
+    DtItemDespesa: Date;
+    DescricaoItemDespesa: string;
+    ValorItemDespesa: string;
+    ItemDespesaId: string;
+    PaganteId: string;
+    NomePagante: string;
+    PercentualPago: string;        
+    NomeTipoItemDespesa: string;     
+    NomeCategoriaItemDespesa: string;
 }
 
 

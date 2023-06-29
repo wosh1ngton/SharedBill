@@ -1,7 +1,4 @@
 <mat-toolbar>
-  <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button> -->
   <span> 
     <img src="/assets/images/logosharedbill.png" alt="" class="logo">  
   </span>
@@ -10,5 +7,5 @@
   <button mat-icon-button class="example-icon" (click)="loginService.Logout()">
     <mat-icon>login</mat-icon>
   </button>
-  Olá <span> &nbsp; {{usuario}} </span>
+  <span class="hello_user">Olá {{usuario}} </span>
 </mat-toolbar>

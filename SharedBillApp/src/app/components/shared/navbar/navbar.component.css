@@ -1,14 +1,8 @@
 .example-spacer {
     flex: 1 1 auto;
   }
-
-
-
-.sidenav-container {
-  height: 850px;
-}
-
 mat-toolbar {
+  width: 100%;
   background-color: rgb(60, 116, 107);
   color: #fff;  
 }
@@ -18,4 +12,9 @@ mat-toolbar {
   padding: 0;
   border: 0;
   width: 180px;
+}
+
+.hello_user {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
 }

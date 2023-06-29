@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, filter, map, switchMap, tap } from 'rxjs';
 import { DespesasService } from 'src/app/services/despesas.service';
@@ -6,6 +6,8 @@ import { DespesasDialogComponent } from '../despesas-dialog/despesas-dialog.comp
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 import { DespesaView } from 'src/app/models/despesaView';
 import { totais } from 'src/app/models/totais';
+import { DespesasStore } from 'src/app/stores/despesas.store';
+import { LoadingService } from 'src/app/loading.service';
 
 @Component({
   selector: 'app-lista-de-despesas',
@@ -22,25 +24,37 @@ export class ListaDeDespesasComponent implements OnInit {
   anoSelecionado: number;
 
   constructor(
+    private despesaStore: DespesasStore,
     private despesaService: DespesasService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private loading: LoadingService
   ) { }
 
   ngOnInit(): void {
     this.getAnos();
-    if (this.anoSelecionado == null) {
-      this.anoSelecionado = 2019;
-      //this.anoSelecionado = this.Anos$.pipe(map(val:any) => {} )
-    }
-    this.reloadListaDespesas(this.anoSelecionado);
-    this.getMeses(this.anoSelecionado);
-    this.getTotais(this.anoSelecionado);
   }
 
   getAnos() {
-    this.Anos$ = this.despesaService.getAnosComDespesas();
+
+    this.Anos$ =
+      this.despesaService.getAnosComDespesas().pipe(
+        tap((val) => {
+          if (!this.anoSelecionado)
+            this.anoSelecionado = Math.max(...val)
+        }),
+        tap(() => this.getMeses(this.anoSelecionado)),
+        tap(() => this.loading.showLoaderUntilCompleted(this.despesaStore.loadAllDespesasPorAno(this.anoSelecionado)
+          .pipe(
+            tap(() => {
+              this.dataSource$ = this.despesaStore.filtrarPorMes(this.mesSelecionado);
+            })
+          )).subscribe()),
+        tap(() => this.getTotais(this.anoSelecionado))
+      );
+
   }
 
+  //Chamado na construção do componente e quando o ano é alterado
   getMeses(ano?: number) {
     this.filtroMes$ = this.despesaService.getMesesFiltroPorAno(ano)
       .pipe(
@@ -56,26 +70,16 @@ export class ListaDeDespesasComponent implements OnInit {
             } else {
               meses[0].selected = true;
               this.mesSelecionado = meses[0].mesInteiro;
-              this.reloadListaDespesas(ano)
             }
           }
           return meses;
         }), tap(() => console.log('getMeses called')))
   }
 
-  reloadListaDespesas(ano?: number) {
-
-    this.dataSource$ = this.despesaService.getDespesas(ano)
-      .pipe(map(
-        (desp) => {
-          console.log(desp);
-          return desp.filter(despesa =>
-            (new Date(despesa.dtItemDespesa).getMonth() + 1) == this.mesSelecionado)
-        }
-      ),
-        tap((desp) => console.log('reload called', this.mesSelecionado))
-      );
-
+  //Chamado sempre que um mês é alterado
+  reloadListaDespesasPorMes(mesSelecionado?: number) {
+    console.log('mes clicado', mesSelecionado)
+    this.dataSource$ = this.despesaStore.filtrarPorMes(mesSelecionado);
   }
 
   getTotais(ano?: number) {
@@ -104,8 +108,7 @@ export class ListaDeDespesasComponent implements OnInit {
     dialogRef.afterClosed()
       .pipe(
         filter(val => !!val),
-        tap(() => this.reloadListaDespesas(this.anoSelecionado)),
-        tap(() => this.getMeses(this.anoSelecionado)),
+        tap(() => this.getAnos()),
         tap((val) => console.log('valor val', val))
       ).subscribe()
   }
@@ -125,7 +128,7 @@ export class ListaDeDespesasComponent implements OnInit {
       .pipe(
         filter(val => !!val),
         switchMap(() => this.despesaService.deleteDespesaById(id)),
-        tap(() => this.reloadListaDespesas(this.anoSelecionado))
+        tap(() => this.getAnos())
       ).
       subscribe({
         next(value) {
@@ -134,8 +137,7 @@ export class ListaDeDespesasComponent implements OnInit {
         error(err) {
           console.log("erro:", err.message)
         },
-      }
-      );
+      });
   }
 
   EditDespesa(despesa: DespesaView) {
@@ -146,15 +148,15 @@ export class ListaDeDespesasComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = "450px";
 
-    dialogConfig.data = despesa.pagamentoId;
+    dialogConfig.data = despesa.PagamentoId;
     console.log(dialogConfig.data);
     const dialogRef = this.dialog.open(DespesasDialogComponent, dialogConfig);
 
     dialogRef.afterClosed()
       .pipe(
         filter(val => !!val),
-        tap(() => this.reloadListaDespesas(this.anoSelecionado)),
-      ).subscribe(() => this.getMeses(this.anoSelecionado))
+        tap(() => this.getAnos()),
+      ).subscribe()
   }
 
 

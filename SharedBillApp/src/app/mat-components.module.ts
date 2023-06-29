@@ -19,7 +19,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table'  
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatChipsModule} from '@angular/material/chips';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({  
@@ -43,7 +43,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatSidenavModule,
     MatTableModule,
     MatSnackBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MatComponentsModule { }

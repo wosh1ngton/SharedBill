@@ -6,11 +6,11 @@
         <p class="tituloForm">
           Cadastrar Despesa
         </p>
-        <input name="pagamentoId" type="hidden" [(ngModel)]="despesa.pagamentoId" />
+        <input name="pagamentoId" type="hidden" [(ngModel)]="despesa.PagamentoId" />
         <mat-form-field appearance="fill">
           <mat-label>Data da despesa </mat-label>
           <input matInput [matDatepicker]="picker" name="DtItemDespesa"
-          [(ngModel)]="despesa.dtItemDespesa">   
+          [(ngModel)]="despesa.DtItemDespesa">   
 
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
@@ -19,20 +19,20 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input matInput required name="DescricaoItemDespesa" 
-          [(ngModel)]="despesa.descricaoItemDespesa">
+          [(ngModel)]="despesa.DescricaoItemDespesa">
         </mat-form-field>
         <br />
         <mat-form-field appearance="fill">
           <mat-label>Valor</mat-label>
           <input matInput required name="ValorItemDespesa"
-          [(ngModel)]="despesa.valorItemDespesa">
+          [(ngModel)]="despesa.ValorItemDespesa">
 
         </mat-form-field>
         <br />
         <mat-form-field appearance="fill">
           <mat-label>Pagante</mat-label>
           <mat-select name="PaganteId" 
-          [(ngModel)]="despesa.paganteId">
+          [(ngModel)]="despesa.PaganteId">
             <mat-option *ngFor="let pg of pagantes | async" [value]="pg.id">
               {{pg.nomePagante + ' ' + pg.sobrenomePagante}}
             </mat-option>        
@@ -42,14 +42,14 @@
         <mat-form-field appearance="fill">
           <mat-label>% pago </mat-label>
           <input matInput required name="PercentualPago" 
-          [(ngModel)]="despesa.percentualPago"
+          [(ngModel)]="despesa.PercentualPago"
           >
         </mat-form-field>
         <br />
         <mat-form-field appearance="fill">
           <mat-label>Tipo de Despesa</mat-label>
           <mat-select name="TipoItemDespesaId"
-          [(ngModel)]="despesa.tipoItemDespesaId">
+          [(ngModel)]="despesa.TipoItemDespesaId">
             <mat-option *ngFor="let pg of tiposDespesas | async" [value]="pg.id">
               {{pg.nomeTipoItemDespesa}}
             </mat-option>
@@ -59,7 +59,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Categoria da Despesa </mat-label>
           <mat-select ngModel name="CategoriaItemDespesaId"
-          [(ngModel)]="despesa.categoriaItemDespesaId">
+          [(ngModel)]="despesa.CategoriaItemDespesaId">
             <mat-option *ngFor="let pg of categoriasDespesas | async" [value]="pg.id">
               {{pg.nomeCategoriaItemDespesa}}
             </mat-option>
@@ -76,14 +76,18 @@
           (click)="close()">
     Fechar
   </button>  
-  <button mat-raised-button color="primary" #createButton
-  [disabled]="f.invalid" (click)="save(f.value)" *ngIf="!despesa.pagamentoId">
+<div id="create-button">
+  <button mat-raised-button #createButton
+  [disabled]="f.invalid" (click)="save(f.value)" *ngIf="!despesa.PagamentoId">
     Criar 
   </button>
-  <button mat-raised-button color="primary" #saveButton *ngIf="despesa.pagamentoId"
+</div>
+<div id="save-button">
+  <button mat-raised-button #saveButton *ngIf="despesa.PagamentoId"
   [disabled]="f.invalid" (click)="editar(f.value)">
     Salvar
   </button>
+</div>
   
 </mat-dialog-actions>
 

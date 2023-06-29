@@ -135,11 +135,32 @@ namespace VaquinhaWebAPI.Repositories
                 select new PercentuaisViewModel {                   
                    MesTotalizado = g.Key.Month,
                    TotalAReceber = (from val in g 
-                    select val.ItemDespesa.ValorItemDespesa *  (1 - (val.PercentualPago * 0.01))).Sum(),
+                    select 
+                        val.ItemDespesa.ValorItemDespesa * (val.PercentualPago * 0.01)).Sum(),
                     Pagante = (from pag in _context.Pagantes where pag.Id == g.Key.Id select pag).SingleOrDefault(),                                     
                 }; 
            
             return despesas;
+        }
+
+        public IEnumerable<DespesasPorMesDTO> ListarDespesasPorMes(int? ano)
+        {
+             if(ano == null)
+                ano = _context.ItensDespesa.Max(x => x.DtItemDespesa.Year);
+
+            var despesas = _context.Pagamentos
+                .Include(x => x.ItemDespesa)
+                    .ThenInclude(x => x.CategoriaItemDespesa)
+                .Include(x => x.ItemDespesa)
+                    .ThenInclude(x => x.TipoItemDespesa)
+                .Include(x => x.Pagante).Where(x => x.ItemDespesa.DtItemDespesa.Year == ano).AsQueryable()
+                .GroupBy(x => x.ItemDespesa.DtItemDespesa.Month)
+                .Select(g => new DespesasPorMesDTO {
+                    Mes = g.Key,
+                    Despesas = g.ToList()
+                }).AsQueryable();
+            
+            return despesas; 
         }
     }
 }
